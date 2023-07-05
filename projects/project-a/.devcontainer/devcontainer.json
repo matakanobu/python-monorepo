@@ -1,0 +1,32 @@
+{
+    "name": "Project-A-Dev",
+    "remoteUser": "vscode",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "../../../"
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "python.languageServer": "Pylance",
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.linting.enabled": true,
+                "python.linting.pylintEnabled": false,
+                "python.linting.mypyEnabled": true,
+                "python.linting.flake8Enabled": true,
+                "python.formatting.provider": "black",
+                "editor.tabSize": 4,
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports": true,
+                    "source.fixAll": true
+                }
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "njpwerner.autoDocstring"
+            ]
+        }
+    }
+}
