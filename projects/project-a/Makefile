@@ -14,10 +14,8 @@ build:
 	# Copy pkg1 files
 	cp -r ../../shared/pkg1 $(TMP_DIR)/pkg1
 
-	cd $(TMP_DIR)
-
 	# Build pkg1
-	cd $(TMP_DIR)/pkg1 && poetry build && cp -r dist ../dist && cd $(TMP_DIR)
+	cd $(TMP_DIR)/pkg1 && poetry build && cp -r dist ../dist
 
 	docker build -t $(REPO_NAME) $(TMP_DIR)
 
