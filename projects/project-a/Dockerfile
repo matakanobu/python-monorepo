@@ -10,12 +10,14 @@ ENV PATH="$POETRY_HOME/bin:$PATH"
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
 COPY ./poetry.lock ./pyproject.toml ./
-COPY ./dist/ /shared/pkg1/dist/
+
+# Copy the shared package written in pyproject.toml
+COPY ./pkg1/ /shared/pkg1/
 
 RUN poetry config virtualenvs.create false && \
     poetry install --no-root --only main
 
-WORKDIR /app
+WORKDIR /project
 COPY src/ src/
 COPY run.py .
 

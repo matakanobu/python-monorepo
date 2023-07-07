@@ -9,7 +9,7 @@ packages = [{include = "project_a"}]
 [tool.poetry.dependencies]
 python = "^3.8.1"
 scikit-learn = "^1.3.0"
-pkg1 = {path = "../../shared/pkg1/dist/pkg1-0.1.0-py3-none-any.whl"}
+pkg1 = {path = "../../shared/pkg1/"}
 
 [build-system]
 requires = ["poetry-core"]

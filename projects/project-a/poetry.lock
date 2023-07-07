@@ -56,14 +56,13 @@ version = "0.1.0"
 description = ""
 category = "main"
 optional = false
-python-versions = ">=3.8,<4.0"
-files = [
-    {file = "pkg1-0.1.0-py3-none-any.whl", hash = "sha256:f59e840efaa2190213e1dde699d00292f4006d91c9a25dc70ba35bbdd06c8e58"},
-]
+python-versions = "^3.8"
+files = []
+develop = false
 
 [package.source]
-type = "file"
-url = "../../shared/pkg1/dist/pkg1-0.1.0-py3-none-any.whl"
+type = "directory"
+url = "../../shared/pkg1"
 
 [[package]]
 name = "scikit-learn"
@@ -162,4 +161,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "cfd4012eba8cf05587fb91078a188811b1fb31f918a9c5872f0c96a072c24606"
+content-hash = "c77a56d88aae5f7af470c4f6754b6fa4433e6ed58b93ebd8238a0de813c399e6"

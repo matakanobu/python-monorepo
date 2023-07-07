@@ -1,9 +1,12 @@
 TMP_DIR := $(shell mktemp -d)
-REPO_NAME := project-a
+IMAGE_NAME := project-a
 
 default: build
-.PHONY: build, test, run
+.PHONY: all, build, test, clean, run
 
+all: build test run
+
+# Build the docker image for deployment this project
 build:
 	# Copy project files
 	cp -r src $(TMP_DIR)/src
@@ -11,21 +14,21 @@ build:
 	cp Dockerfile .dockerignore $(TMP_DIR)
 	cp pyproject.toml poetry.lock $(TMP_DIR)
 
-	# Copy pkg1 files
+	# Copy the shared package written in pyproject.toml
 	cp -r ../../shared/pkg1 $(TMP_DIR)/pkg1
 
-	# Build pkg1
-	cd $(TMP_DIR)/pkg1 && poetry build && cp -r dist ../dist
-
-	docker build -t $(REPO_NAME) $(TMP_DIR)
+	docker build -t $(IMAGE_NAME) $(TMP_DIR)
 
 	rm -rf $(TMP_DIR)
 
+# Run the tests in the docker container
 test:
-	poetry run python -m pytest tests
+	docker run --rm -it -v `pwd`/tests:/project/tests:ro $(IMAGE_NAME) /bin/bash -c 'pip install pytest; python -m pytest /project/tests'
 
+# Remove the docker image
 clean:
-	docker rmi $(REPO_NAME)
+	docker rmi $(IMAGE_NAME)
 
+# Run the docker container
 run:
-	docker run -it --rm $(REPO_NAME)
+	docker run -it --rm $(IMAGE_NAME)
