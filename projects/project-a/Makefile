@@ -13,7 +13,9 @@ dev:
 	$(VENV_NAME)/bin/pip install toml && \
 	$(VENV_NAME)/bin/python ../../scripts/merge_pyproject.py ../../pyproject.toml ./pyproject.toml ./pyproject.toml --copy tool.poetry.group.dev.dependencies tool.black tool.mypy tool.isort && \
 	rm -rf $(VENV_NAME)
-	poetry lock && poetry check && poetry install
+
+	poetry lock --no-update && poetry check && poetry install
+
 	cp ../../.flake8 ./.flake8
 
 # Build the docker image for deployment this project
