@@ -33,4 +33,4 @@ WORKDIR /project
 COPY src/ src/
 COPY run.py .
 
-CMD ["python", "run.py"]
+ENTRYPOINT ["python", "run.py"]
