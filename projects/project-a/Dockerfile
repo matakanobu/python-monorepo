@@ -18,7 +18,7 @@ COPY ./poetry.lock ./pyproject.toml ./
 COPY ./pkg1/ /shared/pkg1/
 
 RUN poetry config virtualenvs.create false && \
-    poetry install --no-root --only main
+    poetry install --no-root --only main --no-dev
 
 FROM amd64/python:3.8.16-slim
 
