@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "poetry-monorepo"
+name = "python-monorepo"
 version = "0.1.0"
 description = ""
 authors = ["masashi_takanobu <mtakanobu2@gmail.com>"]
