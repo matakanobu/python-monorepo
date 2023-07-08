@@ -1,10 +1,33 @@
-# python-monorepo
+# Python Monorepo
 
-This repository is a monorepo example using Poetry. It manages multiple projects in a single repository and shares common code between the projects.
+This repository demonstrates a monorepo architecture using Poetry. It aims to manage multiple projects in a single repository and shares common code between these projects.
+
+## Key Concepts
+
+- Dependencies are managed using a `pyproject.toml` file in each directory.
+- Common code is packaged in the `shared` directory and referenced in each project.
+- Common code is referenced using relative paths, and it's not packaged as a wheel.
+- Development environment setup and deployment image building processes are managed using a Makefile and a Dockerfile.
+- Local package dependencies are handled without the use of scripts as much as possible. Instead, those processes are described in the Makefile and Dockerfile.
+
+## Use Cases
+
+This monorepo is intended to serve the following use cases:
+- Manage dependencies with Poetry.
+- Manage multiple projects in a single repository.
+- Share common code that is not dependent on a specific project.
+- Deploy each project as a Docker image.
+- Develop using a Devcontainer also.
 
 ## Directory Structure
 
-The repository has the following directory structure:
+Here's a breakdown of the top-level items in our directory structure:
+
+- `projects`: This directory houses each individual project. 
+- `shared`: This is where the common code shared across multiple projects is located.
+- `pyproject.toml`: This is the root configuration file where development tools like linters and formatters such as Flake8 and Black are specified.
+
+The structure is as follows:
 
 ```
 python-monorepo
@@ -14,6 +37,9 @@ python-monorepo
 ├── pyproject.toml
 ├── projects
 │   ├── project-a
+│   │   ├── .devcontainer
+│   │   │   ├── Dockerfile
+│   │   │   └── devcontainer.json
 │   │   ├── Dockerfile
 │   │   ├── Makefile
 │   │   ├── poetry.lock
@@ -45,35 +71,46 @@ python-monorepo
         ├── poetry.lock
         └── pyproject.toml
 ```
-* `projects`: Directory for storing individual projects.
-* `shared`: Directory for packaging code shared across multiple projects.
 
-## Use Cases
+## Adding Local Packages
 
-This monorepo is intended to serve the following use cases:
-* Manage dependencies with Poetry.
-* Manage multiple projects in a single repository.
-* Share common code that is not dependent on a specific project.
-* Deploy each project as a Docker image.
-* Develop using a Devcontainer also.
+To add local packages to your project, add them to the `pyproject.toml` file:
 
-## Concept
+```bash
+cd projects/project-xxx
+poetry add ../../shared/pkg-yyy/
+```
 
-* Manage python package dependencies using pyproject.toml in each directory.
-* Package the shared code in the shared directory and reference it from each project.
-* Use relative paths to reference the common code without making it a wheel package.
-* Use Makefile and Dockerfile to manage the procedure for setting up development environment and building deployment images.
+Add the copied shared package to the Makefile:
 
-## Usage
+```bash
+# Copy the shared package written in pyproject.toml
+cp -r ../../shared/pkg-yyy $(TMP_DIR)/pkg-yyy
+```
 
-Development:
+And also add the package to the Dockerfile:
+
+```bash
+# Copy the shared package written in pyproject.toml
+COPY ./pkg-yyy/ /shared/pkg-yyy/
+```
+
+## How to Use
+
+### Development
+
+For setting up a development environment, navigate to the desired project directory and run `make dep`.
+
 ```bash
 cd projects/project-xxx
 make dep
 ```
-or use a Devcontainer.
+Alternatively, you could use a Devcontainer.
 
-Deployment:
+### Deployment
+
+For deployment, navigate to the project directory and run `make build`.
+
 ```bash
 cd projects/project-xxx
 make build
@@ -81,13 +118,15 @@ make build
 
 ## Testing
 
+To run tests, use the following command:
+
 ```bash
 cd projects/project1-xxx
-petry run python -m pytest
+poetry run python -m pytest
 ```
-or
 
-Run tests inside a Docker container:
+Alternatively, you can run tests inside a Docker container:
+
 ```bash
 cd projects/project1-xxx
 make test
