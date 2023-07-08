@@ -55,7 +55,7 @@ This monorepo is intended to serve the following use cases:
 * Manage multiple projects in a single repository.
 * Share common code that is not dependent on a specific project.
 * Deploy each project as a Docker image.
-* Develop using a devcontainer.
+* Develop using a Devcontainer also.
 
 ## Concept
 
@@ -66,14 +66,14 @@ This monorepo is intended to serve the following use cases:
 
 ## Usage
 
-During development:
+Development:
 ```bash
 cd projects/project-xxx
 make dep
 ```
 or use a Devcontainer.
 
-During deployment:
+Deployment:
 ```bash
 cd projects/project-xxx
 make build
