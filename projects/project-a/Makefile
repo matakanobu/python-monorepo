@@ -2,9 +2,13 @@ TMP_DIR := $(shell mktemp -d)
 IMAGE_NAME := project-a
 
 default: build
-.PHONY: all, build, test, clean, run
+.PHONY: all, dep, build, test, clean, run
 
 all: build test run
+
+# Install the dependencies
+dep:
+	poetry install
 
 # Build the docker image for deployment this project
 build:
