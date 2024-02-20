@@ -131,3 +131,8 @@ Alternatively, you can run tests inside a Docker container:
 cd projects/project1-xxx
 make test
 ```
+
+## CI (Continuous Integration)
+In Continuous Integration (CI), it is crucial to run code tests at the time of Pull Request creation and when merging into the main branch.
+
+Here, we use "make build" and "make test" to perform builds and tests. Workflows are created on a per-project basis, and builds and tests are conducted only for projects with changes in their respective src directories. This approach eliminates the need to run build/test for every project every time, significantly saving time. Moreover, by standardizing the command interface for build and test across projects using Makefile, the description of the workflow becomes very simple.
