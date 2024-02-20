@@ -1,0 +1,26 @@
+name: Project A CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - projects/project-a/src/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - projects/project-a/src/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/project-a
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: make build
+      - name: Test code in the Docker container
+        run: make test
