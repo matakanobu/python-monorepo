@@ -27,7 +27,7 @@ build:
 
 # Run the tests in the docker container
 test:
-	docker run --rm -it -v `pwd`/tests:/project/tests:ro --entrypoint /bin/bash $(IMAGE_NAME) -c 'pip install pytest; python -m pytest /project/tests'
+	docker run --rm -v `pwd`/tests:/project/tests:ro --entrypoint /bin/bash $(IMAGE_NAME) -c 'pip install pytest; python -m pytest /project/tests'
 
 # Remove the docker image
 clean:
