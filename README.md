@@ -26,12 +26,17 @@ Here's a breakdown of the top-level items in our directory structure:
 - `projects`: This directory houses each individual project. 
 - `shared`: This is where the common code shared across multiple projects is located.
 - `pyproject.toml`: This is the root configuration file where development tools like linters and formatters such as Flake8 and Black are specified.
+- `.github/workflows`: This directory contains the GitHub Actions workflows for each project. Each project has its own workflow file.
 
 The structure is as follows:
 
 ```
 python-monorepo
 ├── .flake8
+├── .gitignore
+├── .github
+│   └── workflows
+│       └── project-a.yml
 ├── README.md
 ├── poetry.lock
 ├── pyproject.toml
