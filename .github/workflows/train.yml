@@ -1,0 +1,43 @@
+name: Model Training on GitHub Actions
+
+on: issue_comment
+
+permissions:
+  contents: read
+  packages: read
+  pull-requests: read
+
+jobs:
+  train:
+    name: Train model
+    if: ${{ github.event.issue.pull_request  && startsWith(github.event.comment.body, '/train MODEL-NAME') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get branch name
+        run: |
+          branch=$(gh pr view $PR_NO --repo $REPO --json headRefName --jq '.headRefName')
+          echo "Branch: $branch"
+          echo "BRANCH=$branch" >> $GITHUB_ENV
+        env:
+          REPO: ${{ github.repository }}
+          PR_NO: ${{ github.event.issue.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout the PR code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ env.BRANCH }}
+
+      - name: Extract parameters
+        run: |
+          comment="${{ github.event.comment.body }}"
+          params=$(echo "$comment" | sed 's/\/train MODEL-NAME//')
+          extracted_params=$(echo "$params" | sed 's/^[ \t]*//' | sed 's/\([^ ]*\)=\([^ ]*\)/\1=\2/g; s/\"//g')
+          echo "Extracted parameters: $extracted_params"
+          echo "EXTRACTED_PARAMS=$extracted_params" >> $GITHUB_ENV
+      - name: Model Training trigger...
+        run: |
+          echo "Training model with parameters: $EXTRACTED_PARAMS"
+          echo "Add your training script here"
