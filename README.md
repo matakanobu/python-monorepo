@@ -1,6 +1,7 @@
 # Python Monorepo
 
-This repository demonstrates a monorepo architecture using Poetry. It aims to manage multiple projects in a single repository and shares common code between these projects.
+This repository demonstrates a monorepo architecture using Poetry. It aims to manage multiple projects in a single
+repository and shares common code between these projects.
 
 ## Key Concepts
 
@@ -8,25 +9,32 @@ This repository demonstrates a monorepo architecture using Poetry. It aims to ma
 - Common code is packaged in the `shared` directory and referenced in each project.
 - Common code is referenced using relative paths, and it's not packaged as a wheel.
 - Development environment setup and deployment image building processes are managed using a Makefile and a Dockerfile.
-- Local package dependencies are handled without the use of scripts as much as possible. Instead, those processes are described in the Makefile and Dockerfile.
+- Local package dependencies are handled without the use of scripts as much as possible. Instead, those processes are
+  described in the Makefile and Dockerfile.
+- Each project has its own GitHub Actions workflow(CI) file.
+- Training ML Models in the CI/CD Pipeline.
 
 ## Use Cases
 
 This monorepo is intended to serve the following use cases:
+
 - Manage dependencies with Poetry.
 - Manage multiple projects in a single repository.
 - Share common code that is not dependent on a specific project.
 - Deploy each project as a Docker image.
 - Develop using a Devcontainer also.
+- Train ML Models triggered by Pull Requests.
 
 ## Directory Structure
 
 Here's a breakdown of the top-level items in our directory structure:
 
-- `projects`: This directory houses each individual project. 
+- `projects`: This directory houses each individual project.
 - `shared`: This is where the common code shared across multiple projects is located.
-- `pyproject.toml`: This is the root configuration file where development tools like linters and formatters such as Flake8 and Black are specified.
-- `.github/workflows`: This directory contains the GitHub Actions workflows for each project. Each project has its own workflow file.
+- `pyproject.toml`: This is the root configuration file where development tools like linters and formatters such as
+  Flake8 and Black are specified.
+- `.github/workflows`: This directory contains the GitHub Actions workflows for each project. Each project has its own
+  workflow file.
 
 The structure is as follows:
 
@@ -110,6 +118,7 @@ For setting up a development environment, navigate to the desired project direct
 cd projects/project-xxx
 make dep
 ```
+
 Alternatively, you could use a Devcontainer.
 
 ### Deployment
@@ -138,6 +147,23 @@ make test
 ```
 
 ## CI (Continuous Integration)
-In Continuous Integration (CI), it is crucial to run code tests at the time of Pull Request creation and when merging into the main branch.
 
-Here, we use "make build" and "make test" to perform builds and tests. Workflows are created on a per-project basis, and builds and tests are conducted only for projects with changes in their respective src directories. This approach eliminates the need to run build/test for every project every time, significantly saving time. Moreover, by standardizing the command interface for build and test across projects using Makefile, the description of the workflow becomes very simple.
+In Continuous Integration (CI), it is crucial to run code tests at the time of Pull Request creation and when merging
+into the main branch.
+
+Here, we use "make build" and "make test" to perform builds and tests. Workflows are created on a per-project basis, and
+builds and tests are conducted only for projects with changes in their respective src directories. This approach
+eliminates the need to run build/test for every project every time, significantly saving time. Moreover, by
+standardizing the command interface for build and test across projects using Makefile, the description of the workflow
+becomes very simple.
+
+## Model Training with CI/CD
+
+In the CI/CD pipeline, we can train ML models triggered by Pull Request comments.
+The comment would work as a command, and take hyperparameters as an argument.
+
+It would be like this:
+
+<img src="img/pr-training.png" width="800px">
+
+This is useful for training models in a reproducible manner and for sharing the results with team members.
