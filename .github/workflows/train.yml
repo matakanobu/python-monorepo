@@ -3,9 +3,11 @@ name: Model Training on GitHub Actions
 on: issue_comment
 
 permissions:
-  contents: read
+  contents: write
   packages: read
-  pull-requests: read
+  pull-requests: write
+  issues: write
+
 
 jobs:
   train:
@@ -34,10 +36,16 @@ jobs:
         run: |
           comment="${{ github.event.comment.body }}"
           params=$(echo "$comment" | sed 's/\/train MODEL-NAME//')
-          extracted_params=$(echo "$params" | sed 's/^[ \t]*//' | sed 's/\([^ ]*\)=\([^ ]*\)/\1=\2/g; s/\"//g')
+          extracted_params=$(echo "$params" | sed 's/^[ \t]*//' | sed 's/\([^ ]*\)=\([^ ]*\)/--\1=\2/g; s/\"//g')
           echo "Extracted parameters: $extracted_params"
           echo "EXTRACTED_PARAMS=$extracted_params" >> $GITHUB_ENV
-      - name: Model Training trigger...
+
+      - name: Model Training trigger
+        run: echo ${{ env.EXTRACTED_PARAMS }}
+
+      - name: Comment on PR
         run: |
-          echo "Training model with parameters: $EXTRACTED_PARAMS"
-          echo "Add your training script here"
+          comment=$(echo -e "Training started for model MODEL-NAME with parameters: ${{ env.EXTRACTED_PARAMS }}" )
+          gh pr comment ${{ github.event.pull_request.number }} --body  "${comment}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
