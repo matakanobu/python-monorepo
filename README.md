@@ -166,4 +166,6 @@ It would be like this:
 
 <img src="img/pr-training.png" width="800px">
 
+These hyperparameters can be passed to Hydra and overwritten.
+
 This is useful for training models in a reproducible manner and for sharing the results with team members.
